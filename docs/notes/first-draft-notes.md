@@ -15,6 +15,8 @@ Since i'm using my desktop that has Windows and my project is on my Linux laptop
 - Enabled and installed SSH on the Linux Laptop.
 - Became more familiar with commands for connecting remotely
 - Succesfully created a SSH connection between the desktop and laptop.
+- Created checklists that are hardcoded for personal use and generalized for non personal use
+- everything named **template** is for non personal use
 - Adjusted the `.ssh` config:
 
  ```ssh
@@ -24,21 +26,23 @@ Since i'm using my desktop that has Windows and my project is on my Linux laptop
  ```
  ```ssh
  Host control-plane-1
-    HostName 192.168.1.221
+    HostName 192.168.122.221
     User altamiranos
  ```
  ```ssh
  Host worker-node-1
-    HostName 192.168.1.113
+    HostName 192.168.122.113
     User altamiranos
  ```
  ```ssh
  Host worker-node-2
-    HostName 192.168.1.42
+    HostName 192.168.122.42
     User altamiranos
  ```
 "
 Since the KVM has a "built in" DHCP i decided to leave the IP:s as they are. The ideal would be to assign Static IP:S but since the scope is on a smaller scaler it is doable this way. 
 
-The virtualized environment is using a default network that should be enough. Aliases were also added for faster 
+The virtualized environment is using a default network that should be enough. Aliases were also added for smoother access and easier navigation. 
+
+Tomorrows plan is to use the checklist to perform a thorough preflight before installing k3s.  
 
