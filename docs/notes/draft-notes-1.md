@@ -1,3 +1,11 @@
+## Disclaimer
+
+These draft notes are based on environment-specific configurations (hardcoded values such as IP addresses and hostnames).
+
+They are intended for personal documentation and learning purposes only, and may not be directly applicable to other environments without modification.
+
+For a generalized and reproducible setup, refer to the corresponding template-based documentation.
+
 # Draft notes 20/4 2026
 
 These are the initial steps for the project. This document will be used as a checklist for technical advancements and progress made along the way. However this document is stricly made for personal use and personal progression. Relevant documents and technical attachments will be added as the project progresses.
@@ -45,4 +53,26 @@ Since the KVM has a "built in" DHCP i decided to leave the IP:s as they are. The
 The virtualized environment is using a default network that should be enough. Aliases were also added for smoother access and easier navigation. 
 
 Tomorrows plan is to use the checklist to perform a thorough preflight before installing k3s.  
+
+# Draft notes 22/4 2026 
+
+The day commenced with starting up all the VMs. I've noticed that i needed to enable SSH on both the worker-nodes. This was a quick fix. Now that i have SSH working for every component i started the preflight check. This is based on the **preflight-checklist.md** found in **~/docs/k3s/**
+
+- Infrastructure
+- Networking
+- SSH Access
+- System Preparation
+- System Validation
+
+After the preflight is done, it was time to install k3s. The first step is to create the control-plane and later move on to create the worker-nodes. 
+
+### k3s install
+
+The installation went very smooth, i had no issues getting the cluster up and running. However all the documentation that i decided to make (hardcoded and non-hardcoded) is taking a bit of time, this is still important to have project reproducible, so this is important. The installation process is based on the **k3s-install-checklist.md**  found in **~/docs/k3s/**
+
+- Control plane installed on control-plane-1 
+- Joined the worker node 1 to the control plane trough Token and IP
+- Joined the worker node 2 to the control plane trough Token and IP
+- Verified that `sudo kubectl get nodes` and `sudo kubectl get pods -A` works 
+
 

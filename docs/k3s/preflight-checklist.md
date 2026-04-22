@@ -30,6 +30,23 @@
 ---
 
 ### System Preparation
-- [ ] System packages updated on all nodes
+- [x] Disabled swapoff on all nodes
+```bash
+sudo swapoff -a
+```
+
+- [x] System packages updated on all nodes
 ```bash
 sudo apt update && sudo apt upgrade -y
+```
+---
+
+### System Validation
+- [x] Checked that the system clock is in sync
+- [x] Checked that the NTP service is active
+- [x] Checked that curl exists
+- [x] Checked all the previous steps
+
+---
+
+**Now go on and install k3s!**

@@ -1,6 +1,8 @@
 ## K3s Pre-Installation Checklist
-
-> Replace placeholder values with environment-specific configuration.
+**installation should always be done from the top**
+> Replace placeholder values with environment-specific configuration. <br>
+> Mark each step as completed [x] during the installation process.
+---
 
 ### Infrastructure
 - [ ] 3 virtual machines created
@@ -31,6 +33,23 @@
 ---
 
 ### System Preparation
+- [ ] Disabled swapoff on all nodes
+```bash
+sudo swapoff -a
+```
+
 - [ ] System packages updated on all nodes
 ```bash
 sudo apt update && sudo apt upgrade -y
+```
+---
+
+### System Validation
+- [ ] Checked that the system clock is in sync
+- [ ] Checked that the NTP service is active
+- [ ] Checked that curl exists
+- [ ] Checked all the previous steps
+
+---
+
+**Now go on and install k3s!**
