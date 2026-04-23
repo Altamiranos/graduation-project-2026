@@ -122,4 +122,4 @@ This is based on **fastapi.yaml** found in **~/graduation-project-2026/deploymen
 - Comments were added for more transparency
 - The deployment and service manifests were put in the same .yaml named **fastapi.yaml**
 
-Plan for tomorrow 
+Plan for tomorrow: Troubleshoot the ErrImageNeverPull to running. Afterwards continue deployment and finish checklists for deployment. One for template and one for you.
