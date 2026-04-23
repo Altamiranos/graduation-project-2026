@@ -1,0 +1,35 @@
+apiVersion: apps/v1 # deploymenmt fór fastAPI
+kind: Deployment # for more info - `kubectl get pods` in the terminal 
+metadata:
+  name: fastapi-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: fastapi
+  template:
+    metadata:
+      labels:
+        app: fastapi
+    spec:
+      containers:
+        - name: fastapi
+          image: fastapi-k3s:1.0 # this is the Dockerfile (image) that was created in podman.
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8000
+          env:
+            - name: APP_ENV
+              value: "k3s"
+---
+apiVersion: v1 # service for FastAPI, inserted here instead of having two different .yaml
+kind: Service # for more info - `kubectl get svc` in the terminal
+metadata:
+  name: fastapi-service
+spec:
+  selector:
+    app: fastapi
+  ports:
+    - port: 80
+      targetPort: 8000
+  type: NodePort

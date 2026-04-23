@@ -56,7 +56,7 @@ Tomorrows plan is to use the checklist to perform a thorough preflight before in
 
 # Draft notes 22/4 2026 
 
-The day commenced with starting up all the VMs. I've noticed that i needed to enable SSH on both the worker-nodes. This was a quick fix. Now that i have SSH working for every component i started the preflight check. This is based on the **preflight-checklist.md** found in **~/docs/k3s/**
+The day commenced with starting up all the VMs. I've noticed that i needed to enable SSH on both the worker-nodes. This was a quick fix. Now that i have SSH working for every component i started the preflight check. This is based on the **preflight-checklist.md** found in **~/graduation-project-2026/docs/k3s/**
 
 - Infrastructure
 - Networking
@@ -68,7 +68,7 @@ After the preflight is done, it was time to install k3s. The first step is to cr
 
 ### k3s install
 
-The installation went very smooth, i had no issues getting the cluster up and running. However all the documentation that i decided to make (hardcoded and non-hardcoded) is taking a bit of time, this is still important to have project reproducible, so this is important. The installation process is based on the **k3s-install-checklist.md**  found in **~/docs/k3s/**
+The installation went very smooth, i had no issues getting the cluster up and running. However all the documentation that i decided to make (hardcoded and non-hardcoded) is taking a bit of time, this is still important to have project reproducible, so this is important. The installation process is based on the **k3s-install-checklist.md**  found in **~/graduation-project-2026/docs/k3s/**
 
 - Control plane installed on control-plane-1 
 - Joined the worker node 1 to the control plane trough Token and IP
@@ -76,3 +76,50 @@ The installation went very smooth, i had no issues getting the cluster up and ru
 - Verified that `sudo kubectl get nodes` and `sudo kubectl get pods -A` works 
 
 
+# Draft notes 23/4 2026 
+
+The cluster is alive and well. The first drafts of the progress so far is also written. This will be the standard workflow and process moving forward. There are two options of moving forward with Deployment that is the next step, i can create a basic deplyment with kubectl create or write my own .yaml files for it. Since This project focuses on growth and is a valuable learning experience i decided to go with the second option. I'm also aware of the nginx/demo that is usually used for the "testdeployment" This is not being used for my own deployment tho, because nginx is not used in this project. This was decided from the start of the project and will be followed trough. 
+
+The deployment will instead be:
+- FastAPI-service (simplified): `main-py`, `Dockerfile`, `deployment.yaml`, `service.yaml`
+- The idea is to use FastAPI because of it's relevance and modernism. This could result in a very valuable learning experience even if it is created on a small scale for the limited infrastructure that this project is based on.
+- This will be timeconsuming, however could be very worth it. High risk - High reward!
+
+Since the whole project is based on k3s, FastAPI deployment will be done trough **Podman** as a builder and **containerd** as a runtime, instead of using Docker. These alternatives are even more lightweight and are also completely open-source while docker has been in a grey-zone lately with their licensing.  
+
+**FastAPI app:**
+1. Build as a container image trough podman
+2. Imports to k3s
+3. Standard-runtime by containerd
+---
+
+Created a directory: ~/graduation-project-2026/app. This is where the `main.py` and `Dockerfile` will be. 
+
+This is based on **main.py, fastapi-k3s.tar, Dockerfile** found in **~/graduation-project-2026/app/**
+
+- Created an image in **Dockerfile** for FastAPI
+- Build an image trough podman for **fastapi.yaml**
+- Exported created image as **fastapi-k3s.tar**
+- Sent created image to control-plane-1
+- Sent **Dockerfile** to control-plane-1
+- Sent **fastapi-k3s.tar** to control-plane-1
+- Sent **fastapi-k3s.tar** to worker-node-1
+- Sent **fastapi-k3s.tar** to worker-node-2
+
+Issues encountered: When deploying the fastapi, i got the status ErrImageNeverPull. This will be troubleshooted tomorrow.
+
+```bash
+Events:
+  Type     Reason             Age                    From               Message
+  ----     ------             ----                   ----               -------
+  Normal   Scheduled          3m56s                  default-scheduler  Successfully assigned default/fastapi-app-7dd646d7c5-b9mm2 to worker-node-1
+  Warning  Failed             101s (x12 over 3m56s)  kubelet            Error: ErrImageNeverPull
+  Warning  ErrImageNeverPull  90s (x13 over 3m56s)   kubelet            Container image "fastapi-k3s:1.0" is not present with pull policy of Never
+ ```
+ ---
+This is based on **fastapi.yaml** found in **~/graduation-project-2026/deployment/**
+- Created a deployment manifest and a service manifest
+- Comments were added for more transparency
+- The deployment and service manifests were put in the same .yaml named **fastapi.yaml**
+
+Plan for tomorrow 
