@@ -225,3 +225,13 @@ http://localhost:18080
 This confirms that ingress is now functional!
 
 ingress -> service -> pods
+
+# Draft notes 26/4 2020
+This day was dedicated mostly to structure docs, update files, templates and preparing for adding monitoring. The most convenient way is to install through Helm.
+
+From the control-plane 
+```bash
+curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash # install for Helm
+helm version # Check the current version
+```
+The next step is to install monitoring (Grafana + Prometheus).
