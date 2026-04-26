@@ -25,6 +25,18 @@ spec:
           env:
             - name: APP_ENV
               value: "<APP_ENV>" # Environment variable - `kubectl exec -it <POD_NAME> -- printenv | grep APP_ENV`
+          livenessProbe:  # restarts pod if it becomes unresponsive
+            httpGet:
+              path: <HEALTH_ENDPOINT> # example: /health - must exist in your app
+              port: <CONTAINER_PORT>  # must match containerPort above
+            initialDelaySeconds: <INITIAL_DELAY> # example: 5 - seconds to wait before first check
+            periodSeconds: <PERIOD>              # example: 10 - seconds between each check
+          readinessProbe: # removes pod from service if not ready
+            httpGet:
+              path: <HEALTH_ENDPOINT> # example: /health - must exist in your app
+              port: <CONTAINER_PORT>  # must match containerPort above
+            initialDelaySeconds: <INITIAL_DELAY> # example: 5 - seconds to wait before first check
+            periodSeconds: <PERIOD>              # example: 10 - seconds between each check
 
 ---
 apiVersion: v1

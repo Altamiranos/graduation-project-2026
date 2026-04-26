@@ -208,7 +208,7 @@ Updated the **ingress.yaml** and added the following:
                   number: 80
 ```
 ---
-This was to fix the connection trough the tunnel, by adding this the FastAPI can now be showed in browser as well.  This means that one of the main questions are now covered. 
+This was to fix the connection through the tunnel, by adding this the FastAPI can now be showed in browser as well. This means that one of the main questions are now covered. 
 
 **The application was succesfully exposed using Traefik ingress**
 

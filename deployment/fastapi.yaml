@@ -21,6 +21,18 @@ spec:
           env:
             - name: APP_ENV
               value: "k3s"
+          livenessProbe:  # restarts pod if it becomes unresponsive
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 5  # wait 5s before first check
+            periodSeconds: 10       # check every 10s
+          readinessProbe: # removes pod from service if not ready
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 5  # wait 5s before first check
+            periodSeconds: 10       # check every 10s
 ---
 apiVersion: v1 # service for FastAPI, inserted here instead of having two different .yaml
 kind: Service # for more info - `kubectl get svc` in the terminal
