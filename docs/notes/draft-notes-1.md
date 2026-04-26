@@ -175,10 +175,14 @@ fastapi.yaml # hardcoded
 fastapi-template.yaml # template that is non-hardcoded. Updated with instructions and helpful hints.
 ```
 ```markdown
-k3s-deployment-checklist.md # hardcorded
+k3s-deployment-checklist.md # hardcoded
 k3s-deployment-checklist-template.md # template that is not hardcoded
 ```
 ---
 
-Tomorrows plan: Move on to ingress. 
+Tomorrows plan: Move on to ingress, configure traefik. Create docs. 
+
+# Draft notes 25/4 2026 
+
+Now that the core project has taken shape, it's time to answer one of the main questions in this project.
 
