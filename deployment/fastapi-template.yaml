@@ -1,0 +1,40 @@
+# Ensure image is imported on ALL nodes before applying 
+# Replace all <PLACEHOLDERS> before applying the configuration
+# Apply with: kubectl apply -f <FILE_NAME>.yaml # run on control-plane
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: <DEPLOYMENT_NAME> # Replace with deployment name - `kubectl get deployments`
+spec:
+  replicas: <REPLICA_COUNT> # Number of pods - `kubectl get pods`
+  selector:
+    matchLabels:
+      app: <APP_LABEL> # Must match pod label - `kubectl get pods --show-labels`
+  template:
+    metadata:
+      labels:
+        app: <APP_LABEL> # Must match selector - `kubectl get pods --show-labels`
+    spec:
+      containers:
+        - name: <CONTAINER_NAME> # Container name inside pod - `kubectl describe pod <POD_NAME>`
+          image: <IMPORTED_IMAGE_NAME>:<IMAGE_TAG> # Must match imported image - `sudo k3s ctr images ls | grep <IMAGE_NAME>`
+          imagePullPolicy: Never # Leave as is, for troubleshooting, check Events - `kubectl describe pod <POD_NAME>`
+          ports:
+            - containerPort: <CONTAINER_PORT> # App port inside container - `curl http://localhost:<PORT>` (inside container)
+          env:
+            - name: APP_ENV
+              value: "<APP_ENV>" # Environment variable - `kubectl exec -it <POD_NAME> -- printenv | grep APP_ENV`
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: <SERVICE_NAME> # Service name - `kubectl get svc`
+spec:
+  selector:
+    app: <APP_LABEL> # Must match deployment label - `kubectl get pods --show-labels`
+  ports:
+    - port: <SERVICE_PORT> # Service port inside cluster - `kubectl get svc`
+      targetPort: <CONTAINER_PORT> # Must match containerPort - `kubectl describe svc <SERVICE_NAME>`
+  type: NodePort # Exposes service externally - `kubectl get svc`

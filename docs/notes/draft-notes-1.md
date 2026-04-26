@@ -123,3 +123,62 @@ This is based on **fastapi.yaml** found in **~/graduation-project-2026/deploymen
 - The deployment and service manifests were put in the same .yaml named **fastapi.yaml**
 
 Plan for tomorrow: Troubleshoot the ErrImageNeverPull to running. Afterwards continue deployment and finish checklists for deployment. One for template and one for you.
+
+# Draft notes 24/4 2026
+
+## Deployment
+Started off by troubleshooting the image. For some reason the image was applied with `localhost/fastapi-k3s:1.0` but was searching for `fastapi-k3s:1.0`. Very strange bug. Solved the issue with the ErrImageNeverPull by using the `kubectl set image deployment/fastapi-app fastapi=localhost/fastapi-k3s:1.0`
+
+Moving on! Now that the pods and deployment are working as expected. I tested curl in the terminal
+This is based on **k3s-deployment-checklist** found in **~/graduation-project.2026/docs/k3s/**
+
+```bash
+curl http://192.168.122.113:32300/300/ # worker-node-1
+curl http://192.168.122.42:32300/300/ # worker-node-2
+```
+By entering the curl a couple of times, the worker pods should shuffle between them for the workload. This was succesful!
+- Worker-node-1: fastapi-app-5f449fc659-hwttd
+- Worker-node-2: fastapi-app-5f449fc659-mwdsc
+---
+
+The next step was to test the browser, however i'm sitting at my main pc at home so i needed to ssh to my linux-laptop in powershell to get it to work. My home pc does not have any routing to it, therefore the implementation of the SSH tunnel. (a temporary bridge between the worlds)
+
+```bash
+ssh -L 8080:192.168.122.113:32300 linux-laptop # use the powershell terminal
+```
+By leaving the ssh in powershell terminal running, i succesfully had connection and access to the browser!. You can see the structure below:
+
+**from the top -> down**
+- Windows Browser
+- SSH Tunnel (localhost:8080)
+- Linux laptop
+- KVM network (192.168.122.x)
+- K3s service (NodePort)
+- Pods (2 )
+---
+**Results**
+- FastAPI UI
+- Current Environment
+- hostname
+---
+**Main takeaways**
+- Kubernetes works
+- Service works
+- Networking works
+- Load Balancing works
+- Application works
+
+All the core parts are working as expected!. Before moving on to the next step which is Ingress, docs were created and updated.
+
+```yaml
+fastapi.yaml # hardcoded
+fastapi-template.yaml # template that is non-hardcoded. Updated with instructions and helpful hints.
+```
+```markdown
+k3s-deployment-checklist.md # hardcorded
+k3s-deployment-checklist-template.md # template that is not hardcoded
+```
+---
+
+Tomorrows plan: Move on to ingress. 
+

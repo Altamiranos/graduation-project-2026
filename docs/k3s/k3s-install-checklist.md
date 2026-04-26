@@ -54,4 +54,5 @@ curl -sfL https://get.k3s.io | K3S_URL=https://192.168.122.221:6443 K3S_TOKEN=<T
 ```bash
 sudo kubectl get nodes
 ```
+**k3s is now installed!**
 
