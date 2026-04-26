@@ -227,6 +227,8 @@ This confirms that ingress is now functional!
 ingress -> service -> pods
 
 # Draft notes 26/4 2020
+Added to the /health pathway in **fastapi.yaml** and **fastapi-template.yaml**, by connecting readiness and liveness probes. This makes the FastAPI deployment selfhealing and more production-like. 
+
 This day was dedicated mostly to structure docs, update files, templates and preparing for adding monitoring. The most convenient way is to install through Helm.
 
 From the control-plane 
