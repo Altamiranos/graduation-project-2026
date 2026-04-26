@@ -184,5 +184,44 @@ Tomorrows plan: Move on to ingress, configure traefik. Create docs.
 
 # Draft notes 25/4 2026 
 
-Now that the core project has taken shape, it's time to answer one of the main questions in this project.
+Now that the core project has taken shape, it's time to answer one of the main questions in this project. Since K3s installs Traefik by default. Therefore a relevant .yaml file was created that points towards the FastAPI-service. 
 
+This is based on **ingress.yaml** found in **~/graduation-project-2026/deployment/**
+
+- Applied the .yaml file from the control plane
+- Kubernetes saves the new ingress source
+- Ingress controller (Traefik) sees the .yaml file
+- Update routing in Traefik
+- Traffic is now sent to **fastapi.local** that forwards it to **fastapi-service**
+
+Updated the **ingress.yaml** and added the following:
+```yaml
+    - host: localhost
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: fastapi-service
+                port:
+                  number: 80
+```
+---
+This was to fix the connection trough the tunnel, by adding this the FastAPI can now be showed in browser as well.  This means that one of the main questions are now covered. 
+
+**The application was succesfully exposed using Traefik ingress**
+
+Before adding the second domain, every test or verification was working (ping, curl) but not the browser, therefore the addition made.
+
+SSH tunnel for external access:
+```powershell
+ssh -L 18080:192.168.122.113:80 linux-laptop
+```
+FastAPI in browser:
+```html
+http://localhost:18080
+```
+This confirms that ingress is now functional!
+
+ingress -> service -> pods

@@ -1,0 +1,31 @@
+# Remember to scp this file to <CONTROL_PLANE_HOST> before applying:
+# Replace all <PLACEHOLDERS> before applying the configuration
+# Apply with: kubectl apply -f <FILE_NAME>.yaml # run on control-plane
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: <app-name>-ingress        # replace with ingress name - `kubectl get ingress`
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: <your-domain.local> # Replace with app hostname
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: <service-name> # must match kubernetes service name - `kubectl get svc`
+                port:
+                  number: <service-port>  # must match port(S) - `kubectl describe svc <SERVICE_NAME>`
+    # - host: <second-domain>     # uncomment to add. This could be used as a optional local test host. 
+    #   http:
+    #     paths:
+    #       - path: /
+    #         pathType: Prefix
+    #         backend:
+    #           service:
+    #             name: <service-name>
+    #             port:
+    #               number: <service-port>
