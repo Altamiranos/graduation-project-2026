@@ -3,7 +3,7 @@ kind: Deployment # for more info - `kubectl get pods` in the terminal
 metadata:
   name: fastapi-app
 spec:
-  replicas: 2
+  replicas: 3
   selector:
     matchLabels:
       app: fastapi
