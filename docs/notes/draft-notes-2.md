@@ -85,7 +85,9 @@ Since the original resource allocation in the VMs was enough for running the env
 - Prometheus
 - Grafana
 - Dashboards
-- Required tools
+- Alertmanager
+- node-exporter
+. logs
 
 Therefore resources allocation in the VMs were raised. This was a suprise but also crucial before moving on with the monitoring. 
 
@@ -94,9 +96,9 @@ Therefore resources allocation in the VMs were raised. This was a suprise but al
 - [x] Turn off the VMs.
 
 ```bash
-virsh shutoff control-plane-1
-virsh shutoff worker-node-1
-virsh shutoff worker-node-2
+virsh shutdown control-plane-1
+virsh shutdown worker-node-1
+virsh shutdown worker-node-2
 virsh list --all # verify that all VMs are shutoff
 ```
 - [x] Checked VM info
@@ -155,7 +157,7 @@ sudo qemu-img resize /var/lib/libvirt/images/worker-node-2.qcow2 30G
 - [x] Run in all nodes individually
 ```bash
 lsblk # shows disk info
-df -h # shows how much memory is being used/unused
+df -h # shows disk usage being used/unused
 lsblk # shows disk info
 df -T # shows Filesystem Type (ext4)
 ```
@@ -180,4 +182,10 @@ sudo apt install -y cloud-guest-utils
 sudo growpart /dev/vda 2
 sudo resize2fs /dev/vda2
 ```
+---
 
+## Round-up
+The resource adjustments took more time than expected, so the monitoring is still a WIP, however it is more than 50 % done. The complete `kube-prometheus-stack` is downloaded. The next step would be to verify the monitorings functionality locally before moving on to exposing it through Ingress + Traefik. 
+Checklists were created for monitoring, but also a new document named **environment-requirements.md** found in **~/graduation-project-2026/docs/**. 
+
+This will be a requirements list that will list recommended specifications before even installing VMs. This is to avoid the resource allocation limitations early.
