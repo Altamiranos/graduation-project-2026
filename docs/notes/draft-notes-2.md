@@ -78,18 +78,18 @@ Plan for tomorrow: Adjust the resources in the cluster. Especially the disk capa
 
 # Draft Notes 28/4 2026
 
-The plan for today was to adjust the resources, so the cluster could run more stable since it was pushed to it's limit. The environment self-healead by hhaving pods evicted and workloads shuffled during the `kube-prometheus-stack` installation. The control plane reported `DiskPressure`.
+The plan for today was to adjust the resources, so the cluster could run more stable since it was pushed to it's limit. The environment self-healead by having pods evicted and workloads shuffled during the `kube-prometheus-stack` installation. The control plane reported `DiskPressure`.
 
-Since the original resource allocation in the VMs was enough for running the environment and the FastAPI deployment. The environment reached its limit with the monitoring stack that includes:
+Since the original resource allocation in the VMs was enough for running the environment and the FastAPI deployment, but the environment reached its limit with the monitoring stack that was installed. Stack includes:
 
 - Prometheus
 - Grafana
 - Dashboards
 - Alertmanager
 - node-exporter
-. logs
+- logs
 
-Therefore resources allocation in the VMs were raised. This was a suprise but also crucial before moving on with the monitoring. 
+Therefore resources allocation in the VMs were increased. This was a surprise but also crucial before moving on with the monitoring. 
 
 ### Resource allocation adjustments
 
@@ -139,7 +139,7 @@ virsh domblklist control-plane-1
 virsh domblklist worker-node-1
 virsh domblklist worker-node-2
 
-# Current image sizes (Current 10 GB)
+# Current image sizes before resizing
 sudo qemu-img info /var/lib/libvirt/images/control-plane-1.qcow2
 sudo qemu-img info /var/lib/libvirt/images/worker-node-1.qcow2
 sudo qemu-img info /var/lib/libvirt/images/worker-node-2.qcow2
@@ -158,7 +158,6 @@ sudo qemu-img resize /var/lib/libvirt/images/worker-node-2.qcow2 30G
 ```bash
 lsblk # shows disk info
 df -h # shows disk usage being used/unused
-lsblk # shows disk info
 df -T # shows Filesystem Type (ext4)
 ```
 - [x] Root-filesystem expanded, since the VM disk was resized but did not apply to the root-filesystem. 
@@ -185,7 +184,7 @@ sudo resize2fs /dev/vda2
 ---
 
 ## Round-up
-The resource adjustments took more time than expected, so the monitoring is still a WIP, however it is more than 50 % done. The complete `kube-prometheus-stack` is downloaded. The next step would be to verify the monitorings functionality locally before moving on to exposing it through Ingress + Traefik. 
+The resource adjustments took more time than expected, so the monitoring setup is still WIP, however it is more than 50 % done. The complete `kube-prometheus-stack` is downloaded. The next step would be to verify the monitoring functionality locally before moving on to exposing it through Ingress + Traefik. 
 Checklists were created for monitoring, but also a new document named **environment-requirements.md** found in **~/graduation-project-2026/docs/**. 
 
-This will be a requirements list that will list recommended specifications before even installing VMs. This is to avoid the resource allocation limitations early.
+This will be a requirements document that will list recommended specifications before even installing VMs. This is to avoid the resource allocation limitations early.
