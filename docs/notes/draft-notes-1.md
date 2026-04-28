@@ -236,4 +236,6 @@ From the control-plane
 curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash # install for Helm
 helm version # Check the current version
 ```
-The next step is to install monitoring (Grafana + Prometheus).
+The next step is to install monitoring (Grafana + Prometheus). First week done! 
+
+End of week 1! **Notes will continue in draft-notes-2**
