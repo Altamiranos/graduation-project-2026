@@ -16,6 +16,8 @@ spec:
       labels:
         app: <APP_LABEL> # Must match selector - `kubectl get pods --show-labels`
     spec:
+      serviceAccountName: <SERVICE_ACCOUNT_NAME> # Dedicated ServiceAccount for the workload - `kubectl get serviceaccounts` # fastapi-serviceaccount-template.yaml
+      automountServiceAccountToken: false  # Disable API access
       containers:
         - name: <CONTAINER_NAME> # Container name inside pod - `kubectl describe pod <POD_NAME>`
           image: <IMPORTED_IMAGE_NAME>:<IMAGE_TAG> # Must match imported image - `sudo k3s ctr images ls | grep <IMAGE_NAME>`

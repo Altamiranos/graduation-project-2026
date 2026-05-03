@@ -12,6 +12,8 @@ spec:
       labels:
         app: fastapi
     spec:
+      serviceAccountName: fastapi-app-sa
+      automountServiceAccountToken: false
       containers:
         - name: fastapi
           image: localhost/fastapi-k3s:1.0 # this is the Dockerfile (image) that was created in podman.
