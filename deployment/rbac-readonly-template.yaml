@@ -1,0 +1,49 @@
+# Replace all <PLACEHOLDERS> before applying the configuration
+# Apply with: kubectl apply -f <FILE_NAME>.yaml # run on control-plane
+# This manifest creates a namespace-scoped read-only RBAC configuration.
+# The ServiceAccount can read selected resources but cannot modify them.
+
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: <READONLY_SERVICE_ACCOUNT_NAME> # Example: fastapi-readonly
+  namespace: <NAMESPACE> # Example: default
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: <ROLE_NAME> # Example: pod-and-service-reader
+  namespace: <NAMESPACE> # Example: default
+rules:
+  - apiGroups: [""] # Core API group for resources like pods and services
+    resources: ["pods", "services"] # Resources the ServiceAccount can read
+    verbs: ["get", "list", "watch"] # Read-only permissions
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: <ROLEBINDING_NAME> # Example: fastapi-readonly-binding
+  namespace: <NAMESPACE> # Example: default
+subjects:
+  - kind: ServiceAccount
+    name: <READONLY_SERVICE_ACCOUNT_NAME> # Must match the ServiceAccount name above
+    namespace: <NAMESPACE> # Must match the ServiceAccount namespace above
+roleRef:
+  kind: Role
+  name: <ROLE_NAME> # Must match the Role name above
+  apiGroup: rbac.authorization.k8s.io
+
+# Verification examples:
+# Allowed read-only actions:
+# kubectl auth can-i get pods --as=system:serviceaccount:<NAMESPACE>:<READONLY_SERVICE_ACCOUNT_NAME> -n <NAMESPACE>
+# kubectl auth can-i list services --as=system:serviceaccount:<NAMESPACE>:<READONLY_SERVICE_ACCOUNT_NAME> -n <NAMESPACE>
+#
+# Denied write/sensitive actions:
+# kubectl auth can-i delete pods --as=system:serviceaccount:<NAMESPACE>:<READONLY_SERVICE_ACCOUNT_NAME> -n <NAMESPACE>
+# kubectl auth can-i create deployments --as=system:serviceaccount:<NAMESPACE>:<READONLY_SERVICE_ACCOUNT_NAME> -n <NAMESPACE>
+# kubectl auth can-i get secrets --as=system:serviceaccount:<NAMESPACE>:<READONLY_SERVICE_ACCOUNT_NAME> -n <NAMESPACE>
+#
+# Namespace isolation example:
+# kubectl auth can-i get pods --as=system:serviceaccount:<NAMESPACE>:<READONLY_SERVICE_ACCOUNT_NAME> -n <OTHER_NAMESPACE>
