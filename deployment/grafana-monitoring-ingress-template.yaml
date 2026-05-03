@@ -1,0 +1,22 @@
+# Replace all <PLACEHOLDERS> before applying the configuration
+# Apply with: kubectl apply -f <FILE_NAME>.yaml # run on control-plane
+# This Ingress exposes Grafana through Traefik using host-based routing
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: <INGRESS_NAME> # Example: grafana-monitoring-ingress
+  namespace: <MONITORING_NAMESPACE> # Example: monitoring
+spec:
+  ingressClassName: <INGRESS_CLASS_NAME> # Example: traefik
+  rules:
+    - host: <GRAFANA_HOSTNAME> # Example: grafana.local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: <GRAFANA_SERVICE_NAME> # Example: monitoring-grafana
+                port:
+                  number: <GRAFANA_SERVICE_PORT> # Example: 80

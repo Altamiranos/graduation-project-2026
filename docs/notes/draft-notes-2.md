@@ -399,3 +399,8 @@ This demonstrated the following:
 RBAC can control what an account is allowed to do, which resources it can access, and which namespace the access applies to. The read-only ServiceAccount was able to inspect pods and services in the default namespace, but it was not allowed to modify resources, read secrets, or access the monitoring namespace.
 
 Created a template for the `ServiceAccount` and a hardcoded version. This concludes the technical aspects!
+
+Created YAML
+- fastapi-serviceaccount.yaml
+- fastapi-serviceaccount-template.yaml
+- grafana-monitoring-ingress.yaml
